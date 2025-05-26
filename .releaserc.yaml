@@ -46,7 +46,7 @@ plugins:
         git add pom.xml CHANGELOG.md &&
         git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
         git push origin release-${nextRelease.version} &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master
+        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
