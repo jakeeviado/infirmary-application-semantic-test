@@ -50,18 +50,9 @@ plugins:
         git merge --no-ff origin/master -m "chore: sync release-${nextRelease.version} with master" &&
         git add pom.xml CHANGELOG.md &&
         git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
-        git push -u origin release-${nextRelease.version} --force-with-lease || git push -u origin release-${nextRelease.version} --force &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master
-  - - "@semantic-release/git"
-    - assets:
-        - pom.xml
-        - CHANGELOG.md
-      message: "chore(release): ${nextRelease.version} [skip ci] ${nextRelease.notes}"
+        git push origin release-${nextRelease.version} &&
+        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
           label: "Windows Distribution"
-  - - "@semantic-release/git"
-    - assets:
-        - "pom.xml"
-        - "CHANGELOG.md"
