@@ -6,7 +6,17 @@ plugins:
       releaseRules:
         - breaking: true
           release: major
-        - type: refactoring
+        - type: feat
+          release: minor
+        - type: fix
+          release: patch
+        - type: refactor
+          release: patch
+        - type: docs
+          release: patch
+        - type: test
+          release: patch
+        - type: perf
           release: patch
       defaultBump: patch
   - - "@semantic-release/release-notes-generator"
@@ -27,18 +37,17 @@ plugins:
             section: "Performance Improvement(s)"
           - type: build
             section: "Build system"
-          - type: refactoring
-            section: "Refactoring"
   - - "@semantic-release/exec"
     - prepareCmd: >
         mvn versions:set -DnewVersion=${nextRelease.version} &&
         echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
-      changelogTitle: "# Changelogs"
+      changelogTitle: "# Changelog"
   - - "@semantic-release/exec"
     - prepareCmd: >
-        git fetch origin master release-${nextRelease.version} --no-tags &&
+        set -e &&
+        git fetch origin master release-${nextRelease.version} --no-tags 2>/dev/null || true &&
         git checkout master &&
         git pull origin master &&
         (git checkout release-${nextRelease.version} 2>/dev/null || git checkout -b release-${nextRelease.version}) &&
@@ -47,7 +56,7 @@ plugins:
         git add pom.xml CHANGELOG.md &&
         git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
         git push origin release-${nextRelease.version} --force &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master
+        gh pr create --title "Release ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\n## Changes\n$(cat CHANGELOG.md)" --base main --head release-${nextRelease.version} 2>/dev/null || gh pr edit --title "Release ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\n## Changes\n$(cat CHANGELOG.md)" --base master
   - - "@semantic-release/git"
     - assets:
         - pom.xml
