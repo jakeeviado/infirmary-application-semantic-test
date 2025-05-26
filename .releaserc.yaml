@@ -38,11 +38,15 @@ plugins:
       changelogTitle: "# Changelogs"
   - - "@semantic-release/exec"
     - prepareCmd: >
-        git checkout -b release-${nextRelease.version} &&
+        git fetch origin master &&
+        git checkout master &&
+        git pull origin master &&
+        git checkout -b release-${nextRelease.version} 2>/dev/null || git checkout release-${nextRelease.version} &&
+        git merge --no-ff origin/master -m "chore: sync release-${nextRelease.version} with master" &&
         git add pom.xml CHANGELOG.md &&
-        git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
+        git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
         git push origin release-${nextRelease.version} &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}" --base master
+        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
