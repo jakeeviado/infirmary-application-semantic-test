@@ -43,6 +43,12 @@ plugins:
 #        git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
 #        git push origin release-${nextRelease.version} &&
 #        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}" --base master
+  - - "@semantic-release/git"
+    - assets:
+          - pom.xml
+          - service/pom.xml
+          - CHANGELOG.md
+      message: 'chore(release): ${nextRelease.version} [skip ci]'
   - - "@semantic-release/github"
     - assets:
         - path: "target/*.jar"
