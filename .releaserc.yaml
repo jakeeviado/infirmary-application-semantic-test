@@ -1,7 +1,7 @@
 branches:
-  - master
-  - name: 'release-**'
-    prerelease: true
+  - name: master
+  - name: release/v*
+    prerelease: false
 
 plugins:
   - - "@semantic-release/commit-analyzer"
@@ -9,9 +9,8 @@ plugins:
       releaseRules:
         - breaking: true
           release: major
-        - type: refactoring
+        - type: refactor
           release: patch
-      defaultBump: patch
   - - "@semantic-release/release-notes-generator"
     - preset: conventionalcommits
       presetConfig:
@@ -23,36 +22,38 @@ plugins:
           - type: docs
             section: "Documentation Changes"
           - type: refactor
-            section: "Code Refactor"
+            section: "Code Refactoring"
           - type: test
             section: "Tests"
           - type: perf
             section: "Performance Improvement(s)"
           - type: build
-            section: "Build system"
-          - type: refactoring
-            section: "Refactoring"
-  - - "@semantic-release/exec"
-    - prepareCmd: >
-        mvn versions:set -DnewVersion=${nextRelease.version} &&
-        echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
+            section: "Build System"
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
-      changelogTitle: "# Changelogs"
+      changelogTitle: "# Changelog"
   - - "@semantic-release/exec"
     - prepareCmd: >
-        git fetch origin master &&
-        git fetch origin release-${nextRelease.version} || true &&
-        git checkout master &&
-        git pull origin master &&
-        git branch -D release-${nextRelease.version} || true &&
-        git checkout -b release-${nextRelease.version} &&
-        git merge --no-ff origin/master -m "chore: sync release-${nextRelease.version} with master" &&
-        git add pom.xml CHANGELOG.md &&
-        git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
-        git push origin release-${nextRelease.version} &&
-        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\nChanges:\n$(cat CHANGELOG.md)" --base master
+        mvn versions:set -DnewVersion=${nextRelease.version} || { echo "Failed to update Maven version"; exit 1; } &&
+        echo "NEXT_VERSION=${nextRelease.version}" >> build.env
+  - - "@semantic-release/exec"
+    - prepareCmd: >
+        set -e;
+        git fetch origin master;
+        git checkout master;
+        git pull origin master;
+        git branch -D release/v${nextRelease.version} || true;
+        git checkout -b release/v${nextRelease.version};
+        git add pom.xml CHANGELOG.md build.env;
+        git commit -m "chore(release): prepare release v${nextRelease.version} [skip ci]" --allow-empty;
+        git push origin release/v${nextRelease.version} --force;
+        PR_EXISTS=$(gh pr list --base master --head release/v${nextRelease.version} --state open --json number --jq '.[0].number // ""');
+        if [ -z "$PR_EXISTS" ]; then
+          gh pr create --title "Release v${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master --head release/v${nextRelease.version};
+        else
+          gh pr edit $PR_EXISTS --title "Release v${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)";
+        fi
   - - "@semantic-release/github"
     - assets:
-        - path: "target/package"
-          label: "Windows Distribution"
+        - path: "target/*.jar"
+          label: "Maven Artifact"
