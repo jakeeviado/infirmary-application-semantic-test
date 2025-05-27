@@ -30,19 +30,25 @@ plugins:
           - type: refactoring
             section: "Refactoring"
   - - "@semantic-release/exec"
-    - prepareCmd: >
-        mvn versions:set -DnewVersion=${nextRelease.version} &&
+    - prepareCmd: |
+        echo "Checking out release-staging..."
+        git checkout release-staging || git checkout -b release-staging origin/release-staging || git checkout -b release-staging
+        echo "Merging master into release-staging..."
+        git merge origin/master
+        echo "Setting next release version..."
+        mvn versions:set -DnewVersion=${nextRelease.version}
         echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
       changelogTitle: "# Changelogs"
   - - "@semantic-release/exec"
-    - prepareCmd: >
-        git checkout -b release-${nextRelease.version} &&
-        git add pom.xml CHANGELOG.md &&
-        git commit -m "chore(release): ${nextRelease.version} [skip ci]" &&
-        git push origin release-${nextRelease.version}
-  - - "@semantic-release/github"
-    - assets:
-        - path: "target/*.jar"
-          label: "Maven Artifact"
+    - prepareCmd: |
+        echo "Updating CHANGELOG.md..."
+        # The changelog file should now reflect changes from the merge
+        git add pom.xml CHANGELOG.md
+        if ! git diff --cached --quiet; then
+          git commit -m "chore(release): update for next version [skip ci]"
+          git push origin release-staging
+        else
+          echo "No changes to commit."
+        fi
