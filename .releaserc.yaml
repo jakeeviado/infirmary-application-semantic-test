@@ -47,3 +47,4 @@ plugins:
     - assets:
         - path: "target/*.jar"
           label: "Maven Artifact (Pre-release)"
+      fail: []
