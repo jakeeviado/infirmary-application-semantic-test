@@ -45,14 +45,4 @@ plugins:
   - - "@semantic-release/github"
     - assets:
         - path: "target/*.jar"
-          label: "Maven Artifact (Pre-release)"
-    - failComment: |
-        This release from branch `${branch.name}` failed because:
-
-        ${error.message}
-    - failTitle: "Semantic Release Failed"
-    - successComment: |
-        This PR was merged and tagged as v${nextRelease.version}:
-        - Release notes: ${nextRelease.notes}
-    - releasedLabels:
-        - released
+          label: "Maven Artifact"
