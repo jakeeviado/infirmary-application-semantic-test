@@ -1,3 +1,12 @@
+# Changelogs
+
+## [1.0.2](https://github.com/jakeeviado/infirmary-application-semantic-test/compare/v1.0.1...v1.0.2) (2025-05-27)
+
+### Bug Fix(es)
+
+* included pom and changelogs on config ([#26](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/26)) ([1a00326](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/1a003266a1add68bef9716189c4bc15b08e573a8))
+* test 10 ([#29](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/29)) ([d5db3c7](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/d5db3c71be4357b7f768707b085d114b3d7dcdce))
+
 # Changelog
 
 ## 1.0.0 (2025-05-27)
