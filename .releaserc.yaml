@@ -6,17 +6,7 @@ plugins:
       releaseRules:
         - breaking: true
           release: major
-        - type: feat
-          release: minor
-        - type: fix
-          release: patch
-        - type: refactor
-          release: patch
-        - type: docs
-          release: patch
-        - type: test
-          release: patch
-        - type: perf
+        - type: refactoring
           release: patch
       defaultBump: patch
   - - "@semantic-release/release-notes-generator"
@@ -37,31 +27,31 @@ plugins:
             section: "Performance Improvement(s)"
           - type: build
             section: "Build system"
+          - type: refactoring
+            section: "Refactoring"
   - - "@semantic-release/exec"
     - prepareCmd: >
         mvn versions:set -DnewVersion=${nextRelease.version} &&
         echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
-      changelogTitle: "# Changelog"
+      changelogTitle: "# Changelogs"
   - - "@semantic-release/exec"
     - prepareCmd: >
-        set -e &&
-        git fetch origin master release-${nextRelease.version} --no-tags 2>/dev/null || true &&
+        git fetch origin master &&
         git checkout master &&
         git pull origin master &&
-        (git checkout release-${nextRelease.version} 2>/dev/null || git checkout -b release-${nextRelease.version}) &&
+        git checkout -b release-${nextRelease.version} || git checkout release-${nextRelease.version} &&
         git merge --no-ff origin/master -m "chore: sync release-${nextRelease.version} with master" &&
-        (git merge --no-ff origin/release-${nextRelease.version} -m "chore: merge existing release-${nextRelease.version} changes" 2>/dev/null || true) &&
         git add pom.xml CHANGELOG.md &&
         git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
-        git push origin release-${nextRelease.version} --force &&
-        gh pr create --title "Release ${nextRelease.version}" --body "New release for version ${nextRelease.version} ## Changes $(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} 2>/dev/null || gh pr edit --title "Release ${nextRelease.version}" --body "New release for version ${nextRelease.version}\n\n## Changes\n$(cat CHANGELOG.md)" --base master
+        git push origin release-${nextRelease.version} &&
+        gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master
   - - "@semantic-release/git"
     - assets:
         - pom.xml
         - CHANGELOG.md
-      message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+      message: "chore(release): ${nextRelease.version} [skip ci] ${nextRelease.notes}"
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
