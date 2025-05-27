@@ -15,6 +15,24 @@
 * application test ([#16](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/16)) ([a76d1d9](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/a76d1d9f1d490c57cdba2c8ae6d8e19cc9c4911a))
 * pom.xml ([#20](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/20)) ([1fc9a30](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/1fc9a30fef7cab885165d3a4eb3d2381cf5a90f0))
 * test branch 3 ([#17](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/17)) ([cc5b6fc](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/cc5b6fc53591212c1294352c8ef09c39839843a7))
+* test branch 6 ([#20](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/20)) ([1b265ee](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/1b265eec7805ad70dcceeff9c9068d30edc60183))
+* typo on config ([#7](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/7)) ([2aeb2d6](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/2aeb2d6f4601f2d765fd4a10df0f7cd4939e6e23))
+
+## 1.0.0 (2025-05-27)
+
+### New Feature(s)
+
+* feature branch test 5 ([#5](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/5)) ([36ca29e](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/36ca29e7c242723bd790e2d3413a2c3dba2fe35c))
+* release feature workflow test 3 ([#4](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/4)) ([ff41dbd](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/ff41dbd7e85e4bd956ae6090c691486a65404764))
+* test feature branch 7 ([#6](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/6)) ([43d4014](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/43d40141622a8b1501c72439a5e0927cebb91d3b))
+* workflow test 11 ([#11](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/11)) ([49b32f8](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/49b32f860244714fba27adc38f1e356062bc0f12))
+* workflow test 9 ([#10](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/10)) ([30e0a92](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/30e0a92bacdbd94b54a82ee4053cb47023d30ead))
+
+### Bug Fix(es)
+
+* application test ([#16](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/16)) ([a76d1d9](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/a76d1d9f1d490c57cdba2c8ae6d8e19cc9c4911a))
+* pom.xml ([#20](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/20)) ([1fc9a30](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/1fc9a30fef7cab885165d3a4eb3d2381cf5a90f0))
+* test branch 3 ([#17](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/17)) ([cc5b6fc](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/cc5b6fc53591212c1294352c8ef09c39839843a7))
 * typo on config ([#7](https://github.com/jakeeviado/infirmary-application-semantic-test/issues/7)) ([2aeb2d6](https://github.com/jakeeviado/infirmary-application-semantic-test/commit/2aeb2d6f4601f2d765fd4a10df0f7cd4939e6e23))
 
 ## 1.0.0 (2025-05-27)
