@@ -1,5 +1,8 @@
 branches:
   - master
+  - name: 'release-**'
+    prerelease: true
+
 plugins:
   - - "@semantic-release/commit-analyzer"
     - preset: conventionalcommits
@@ -39,13 +42,15 @@ plugins:
   - - "@semantic-release/exec"
     - prepareCmd: >
         git fetch origin master &&
+        git fetch origin release-${nextRelease.version} || true &&
         git checkout master &&
         git pull origin master &&
-        git checkout -b release-${nextRelease.version} || git checkout release-${nextRelease.version} &&
+        git branch -D release-${nextRelease.version} || true &&
+        git checkout -b release-${nextRelease.version} &&
         git merge --no-ff origin/master -m "chore: sync release-${nextRelease.version} with master" &&
         git add pom.xml CHANGELOG.md &&
         git commit -m "chore(release): ${nextRelease.version} [skip ci]" --allow-empty &&
-        git push origin release-${nextRelease.version} &&
+        git push -u origin release-${nextRelease.version} --force-with-lease || git push -u origin release-${nextRelease.version} --force &&
         gh pr create --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master --head release-${nextRelease.version} || gh pr edit --title "RELEASE ${nextRelease.version}" --body "New release for version ${nextRelease.version} Changes: $(cat CHANGELOG.md)" --base master
   - - "@semantic-release/git"
     - assets:
@@ -56,3 +61,7 @@ plugins:
     - assets:
         - path: "target/package"
           label: "Windows Distribution"
+  - - "@semantic-release/git"
+    - assets:
+        - "pom.xml"
+        - "CHANGELOG.md"
