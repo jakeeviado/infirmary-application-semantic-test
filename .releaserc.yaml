@@ -1,0 +1,44 @@
+branches:
+  - master
+plugins:
+  - - "@semantic-release/commit-analyzer"
+    - preset: conventionalcommits
+      releaseRules:
+        - breaking: true
+          release: major
+        - type: refactoring
+          release: patch
+      defaultBump: patch
+  - - "@semantic-release/release-notes-generator"
+    - preset: conventionalcommits
+      presetConfig:
+        types:
+          - type: feat
+            section: "New Feature(s)"
+          - type: fix
+            section: "Bug Fix(es)"
+          - type: docs
+            section: "Documentation Changes"
+          - type: refactor
+            section: "Code Refactor"
+          - type: test
+            section: "Tests"
+          - type: perf
+            section: "Performance Improvement(s)"
+          - type: build
+            section: "Build system"
+          - type: refactoring
+            section: "Refactoring"
+  - - "@semantic-release/exec"
+    - prepareCmd: >
+        mvn versions:set -DnewVersion=${nextRelease.version} &&
+        echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
+  - - "@semantic-release/changelog"
+    - changelogFile: CHANGELOG.md
+      changelogTitle: "# Changelogs"
+  - - "@semantic-release/exec"
+    - prepareCmd: "./branching.sh ${nextRelease.version}"
+  - - "@semantic-release/github"
+    - assets:
+        - path: "target/package"
+          label: "Windows Distribution"

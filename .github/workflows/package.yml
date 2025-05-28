@@ -2,7 +2,7 @@ name: Package and Create Artifact
 
 on:
   workflow_run:
-    workflows: ["release-please"]
+    workflows: ["release-ci"]
     branches: [ master ]
     types: [ completed ]
 
