@@ -37,7 +37,7 @@ plugins:
     - changelogFile: CHANGELOG.md
       changelogTitle: "# Changelogs"
   - - "@semantic-release/exec"
-    - prepareCmd: "chmod +x ./branching.sh ${nextRelease.version}"
+    - prepareCmd: "chmod +x ./branching.sh && ./branching.sh ${nextRelease.version}"
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
