@@ -1,5 +1,8 @@
 branches:
   - master
+  - name: release-staging
+    prerelease: staging
+
 plugins:
   - - "@semantic-release/commit-analyzer"
     - preset: conventionalcommits
@@ -9,6 +12,7 @@ plugins:
         - type: refactoring
           release: patch
       defaultBump: patch
+
   - - "@semantic-release/release-notes-generator"
     - preset: conventionalcommits
       presetConfig:
@@ -29,15 +33,21 @@ plugins:
             section: "Build system"
           - type: refactoring
             section: "Refactoring"
+
   - - "@semantic-release/exec"
-    - prepareCmd: >
-        mvn versions:set -DnewVersion=${nextRelease.version} &&
-        echo 'NEXT_VERSION=${nextRelease.version}' >> build.env
+    - prepareCmd: "mvn versions:set -DnewVersion=${nextRelease.version} && echo 'NEXT_VERSION=${nextRelease.version}' >> build.env"
+
   - - "@semantic-release/changelog"
     - changelogFile: CHANGELOG.md
       changelogTitle: "# Changelogs"
-  - - "@semantic-release/exec"
-    - prepareCmd: "chmod +x ./branching.sh && ./branching.sh ${nextRelease.version}"
+
+  - - "@semantic-release/git"
+    - assets:
+        - pom.xml
+        - CHANGELOG.md
+        - build.env
+      message: "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+
   - - "@semantic-release/github"
     - assets:
         - path: "target/package"
